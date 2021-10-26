@@ -18,7 +18,7 @@ function whatIsHappening() {
 }
 
 //your products with their price.
-if ($_GET["food"] == "1") {
+if (isset($_GET["food"]) && ($_GET["food"]) == "1") {
     $products = [
     ['name' => 'Club Ham', 'price' => 3.20],
     ['name' => 'Club Cheese', 'price' => 3],
@@ -28,7 +28,7 @@ if ($_GET["food"] == "1") {
 ];
 }
 
-if ($_GET["food"] == "0") {
+else {
     $products = [
         ['name' => 'Cola', 'price' => 2],
         ['name' => 'Fanta', 'price' => 2],
