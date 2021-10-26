@@ -11,60 +11,33 @@
 </head>
 <body>
 <?php
-//if (isset($_POST['submit']))
-//{
-//    if ((!isset($_POST['email'])) || (!isset($_POST['street'])) ||
-//        (!isset($_POST['streetnumber'])) || (!isset($_POST['city'])) ||
-//        (!isset($_POST['zipcode'])))
-//    {
-//        $error = "*" . "Please fill all the required fields";
-//    }
-//    else
-//    {
-//        $email = $_POST['email'];
-//        $street = $_POST['street'];
-//        $streetnumber = $_POST['streetnumber'];
-//        $city = $_POST['city'];
-//        $zipcode = $_POST['zipcode'];
-//    }
-//}
 
-//$email = $street = $streetnumber = $city = $zipcode = "";
+$_SESSION['street'] = htmlentities($_POST['street']);
+$_SESSION['streetnumber'] = htmlentities($_POST['streetnumber']);
+$_SESSION['city'] = htmlentities($_POST['city']);
+$_SESSION['zipcode'] = htmlentities($_POST['zipcode']);
+$_SESSION['email'] = htmlentities($_POST['email']);
 
-    if (empty($_POST["email"])) {
-        $emailErr = "Email is required";
-    } else {
-        $email = test_input($_POST["email"]);
-        // check if e-mail address is well-formed
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $emailErr = "Invalid email format";
-        }
-    }
-    if (empty($_SESSION["street"])) {
-        $streetErr = "Please, fill the field";
-    }
+$email = $street = $streetnumber = $city = $zipcode = " ";
 
-    if (empty($_SESSION["streetnumber"])) {
-        $streetnumberErr = "Please, fill the field";
-    } else {
-        $streetnumber = is_int($_SESSION["streetnumber"]);
-        if ('false') {
-            $streetnumberErr = "Must contain only numbers";
-        }
+if (!isset($_POST["email"]) || ($_POST["street"]) || ($_POST["streetnumber"]) || ($_POST["city"]) || ($_POST["zipcode"])) {
+    $error = "All fields are required";
+}
+else {
+    $email = test_input(($_POST["email"]));  // check if e-mail address is well-formed
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format";
     }
-
-    if (empty($_SESSION["city"])) {
-        $cityErr = "Please, fill the field";
-    }
-    if (empty($_SESSION["zipcode"])) {
-        $zipErr = "Please, fill the field";
-    } else {
-        $zipcode = is_int($_SESSION["zipcode"]);
-        if ('false') {
-            $zipErr = "Must contain only numbers";
-        }
-    }
-
+}
+if (is_numeric($_POST["streetnumber"])) {
+    $error = "The input is numeric";
+}
+elseif (is_numeric($_POST["zipcode"])) {
+    $error = "The input is numeric";
+}
+else {
+    $error = "The input is not numeric";
+}
 function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -86,43 +59,37 @@ function test_input($data) {
             </li>
         </ul>
     </nav>
-    <form method="post">
+
+    <span class="alert alert-warning" role="alert"><?php print_r("*$error");?></span>
+
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" class="form-control"/>
-                <span class="error">*<?php echo $emailErr;?></span>
+                <input type="text" id="email" name="email" class="form-control" value="<?php print_r($_SESSION['email']);?>"/>
             </div>
-            <div></div>
         </div>
 
         <fieldset>
-            <legend>Address</legend>
-
+            <legend>Address<sup>*</sup></legend>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
-                    <input type="text" name="street" id="street" class="form-control">
-                    <span class="error">*<?php echo $streetErr;?></span>
-
+                    <input type="text" name="street" id="street" class="form-control" value="<?php print_r($_SESSION["street"]);?>">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control">
-                    <span class="error">*<?php echo $streetnumberErr;?></span>
+                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?php print_r($_SESSION["streetnumber"]);?>">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
-                    <input type="text" id="city" name="city" class="form-control">
-                    <span class="error">*<?php echo $cityErr;?></span>
-
+                    <input type="text" id="city" name="city" class="form-control" value="<?php print_r($_SESSION["city"]);?>">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
-                    <input type="text" id="zipcode" name="zipcode" class="form-control">
-                    <span class="error">*<?php echo $zipErr;?></span>
+                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="<?php print_r($_SESSION["zipcode"]);?>">
                 </div>
             </div>
         </fieldset>
@@ -135,7 +102,13 @@ function test_input($data) {
                     &euro; <?php echo number_format($product['price'], 2) ?></label><br />
             <?php endforeach; ?>
         </fieldset>
+        <?php
+        $cost = $_GET["products"]["price"];
+        foreach ($cost as $price){
+        echo $cost."<br />";}
 
+
+        ?>
         <label>
             <input type="checkbox" name="express_delivery" value="5" />
             Express delivery (+ 5 EUR)
