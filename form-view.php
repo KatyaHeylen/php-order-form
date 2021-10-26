@@ -11,28 +11,59 @@
 </head>
 <body>
 <?php
+//if (isset($_POST['submit']))
+//{
+//    if ((!isset($_POST['email'])) || (!isset($_POST['street'])) ||
+//        (!isset($_POST['streetnumber'])) || (!isset($_POST['city'])) ||
+//        (!isset($_POST['zipcode'])))
+//    {
+//        $error = "*" . "Please fill all the required fields";
+//    }
+//    else
+//    {
+//        $email = $_POST['email'];
+//        $street = $_POST['street'];
+//        $streetnumber = $_POST['streetnumber'];
+//        $city = $_POST['city'];
+//        $zipcode = $_POST['zipcode'];
+//    }
+//}
 
-if (empty($_POST["email"])) {
-    $emailErr = "Email is required";
-} else {
-    $email = test_input($_POST["email"]);
-    // check if e-mail address is well-formed
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $emailErr = "Invalid email format";
+//$email = $street = $streetnumber = $city = $zipcode = "";
+
+    if (empty($_POST["email"])) {
+        $emailErr = "Email is required";
+    } else {
+        $email = test_input($_POST["email"]);
+        // check if e-mail address is well-formed
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Invalid email format";
+        }
     }
-}
-if (empty($_POST["street"])) {
-    $streetErr = "Please, fill the field";
-}
-if (empty($_POST["streetnumber"])) {
-    $streetnumberErr = "Please, fill the field";
-}
-if (empty($_POST["city"])) {
-    $cityErr = "Please, fill the field";
-}
-if (empty($_POST["zipcode"])) {
-    $zipErr = "Please, fill the field";
-}
+    if (empty($_SESSION["street"])) {
+        $streetErr = "Please, fill the field";
+    }
+
+    if (empty($_SESSION["streetnumber"])) {
+        $streetnumberErr = "Please, fill the field";
+    } else {
+        $streetnumber = is_int($_SESSION["streetnumber"]);
+        if ('false') {
+            $streetnumberErr = "Must contain only numbers";
+        }
+    }
+
+    if (empty($_SESSION["city"])) {
+        $cityErr = "Please, fill the field";
+    }
+    if (empty($_SESSION["zipcode"])) {
+        $zipErr = "Please, fill the field";
+    } else {
+        $zipcode = is_int($_SESSION["zipcode"]);
+        if ('false') {
+            $zipErr = "Must contain only numbers";
+        }
+    }
 
 function test_input($data) {
     $data = trim($data);
@@ -40,6 +71,7 @@ function test_input($data) {
     $data = htmlspecialchars($data);
     return $data;
 }
+    whatIsHappening();
 
 ?>
 <div class="container">
@@ -72,6 +104,7 @@ function test_input($data) {
                     <label for="street">Street:</label>
                     <input type="text" name="street" id="street" class="form-control">
                     <span class="error">*<?php echo $streetErr;?></span>
+
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
@@ -84,6 +117,7 @@ function test_input($data) {
                     <label for="city">City:</label>
                     <input type="text" id="city" name="city" class="form-control">
                     <span class="error">*<?php echo $cityErr;?></span>
+
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
