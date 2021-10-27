@@ -49,16 +49,13 @@ function test_input($data) {
 }
     whatIsHappening();
 
-
+$totalValue = 0;
+$express_delivery = 5;
 if (isset($_POST['submit'])) {
-    if (!empty($_POST['products'])) {
-        foreach ($_POST['products'] as $product) {
-            echo "Your Order: ".$product["name"] .'<br/>';
-        }
+    if (!empty($_POST(["express_delivery"]))) {
+        $totalValue = + $express_delivery["value"];
     }
 }
-
-
 ?>
 
 <div class="container">
@@ -74,12 +71,21 @@ if (isset($_POST['submit'])) {
         </ul>
     </nav>
 
-
 <?php
-if (count($errors) > 0 && isset($_POST['submit'])) {
     foreach($errors as $error) {?>
     <span class="alert alert-warning" role="alert"><?php print_r("*$error");?></span>
-<?php }} ?>
+<?php } ?>
+
+
+<div class="alert alert-success" role="alert">
+    <h4>Your order:</h4>
+        <ul>
+            <li>Email: <?php if (isset($_POST["email"])) { echo ($_POST["email"]);}?> </li>
+            <li>Delivery address: <?php if (isset($_POST["street"]) || isset($_POST["streetnumber"]) || isset($_POST["city"]) || isset($_POST["zipcode"])) { echo $_POST["street"]. ", ". $_POST["streetnumber"] . ", " . $_POST["city"] . ", " . $_POST["zipcode"];}?></li>
+            <li>Your food and drinks:</li>
+            <li>Expected delivery time:</li>
+        </ul>
+</div>
 
     <form method="post" action="">
         <div class="form-row">

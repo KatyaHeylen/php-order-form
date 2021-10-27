@@ -42,3 +42,5 @@ else {
 $totalValue = 0;
 
 require 'form-view.php';
+
+session_destroy();
