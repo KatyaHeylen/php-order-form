@@ -12,7 +12,6 @@
 <body>
 <?php
 
-
 $email = $street = $streetnumber = $city = $zipcode = "";
 $errors = [];
 
@@ -79,13 +78,13 @@ if (isset($_POST["submit"]) && ($_POST["products"] !== 0)) {
     <h4>Your order:</h4>
         <ul>
             <li>Email: <?php if (isset($_POST["email"]) && count($errors) == 0) { echo ($_POST["email"]);}?> </li>
-            <li>Delivery address: <?php if (isset($_POST["street"]) || isset($_POST["streetnumber"]) || isset($_POST["city"]) || isset($_POST["zipcode"]) && count($errors) == 0) { echo $_POST["street"]. ", ". $_POST["streetnumber"] . ", " . $_POST["city"] . ", " . $_POST["zipcode"];}?></li>
+            <li>Delivery address: <?php if (count($errors) == 0 && isset($_POST["street"]) || isset($_POST["streetnumber"]) || isset($_POST["city"]) || isset($_POST["zipcode"])) { echo $_POST["street"]. ", ". $_POST["streetnumber"] . ", " . $_POST["city"] . ", " . $_POST["zipcode"];}?></li>
             <li>Your food and drinks:</li>
             <li>Expected delivery time: <?php
-                if (isset($_POST["submit"]) && (isset($_POST["express_delivery"]))) {
-                date_default_timezone_get(); echo "during 45 min from " . date("h:i:sa");
+                if (isset($_POST["express_delivery"])) {
+                echo "during 45 min from " . date("h:i:sa");
                 } else {
-                    date_default_timezone_get(); echo "during 2 hours from " . date("h:i:sa");
+                    echo "during 2 hours from " . date("h:i:sa");
                 }
                 ;?></li>
         </ul>
